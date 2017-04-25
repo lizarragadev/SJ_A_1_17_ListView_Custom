@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -54,6 +55,12 @@ public class CustomAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        Typeface tf_thin = Typeface.createFromAsset(
+                context.getAssets(), "fonts/roboto_thin.ttf");
+        
+        viewHolder.itemNombre.setTypeface(tf_thin);
+        viewHolder.itemTipo.setTypeface(tf_thin);
 
         Pokemon currentItem = (Pokemon) getItem(position);
         viewHolder.itemNombre.setText(currentItem.getNombre());
