@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,15 +35,37 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        lvDatos = (ListView) findViewById(R.id.lvLista);
+        activity = this;
+        datos = new ArrayList<Pokemon>();
+
+        llenarArrayList();
+
+        adaptador = new CustomAdapter(activity, datos);
+
+        lvDatos.setAdapter(adaptador);
+        lvDatos.setOnItemClickListener(this);
+
     }
 
     public void llenarArrayList() {
-
-    }
+        Resources resources = getResources();
+        String[] arrayNombres = resources.getStringArray(R.array.nombre);
+        String[] arrayTipos = resources.getStringArray(R.array.tipos);
+        TypedArray imgs = resources.obtainTypedArray(R.array.image);
+        for(int i=0; i < arrayNombres.length; i++) {
+            datos.add(new Pokemon(arrayNombres[i],
+                    arrayTipos[i], imgs.getResourceId(i, -1)));
+        }
+     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        Toast.makeText(getApplicationContext(), "Ckick", Toast.LENGTH_LONG).show();
+        Pokemon pokemon = datos.get(position);
+        Intent i = new Intent(getApplicationContext(), DetalleActivity.class);
+        i.putExtra("poke", pokemon);
+        startActivity(i);
     }
 }
 
